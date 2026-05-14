@@ -1,9 +1,13 @@
-import { createServer } from "http";
+import { createServer, IncomingMessage, ServerResponse } from "http";
 import { Server } from "socket.io";
 
 const PORT = process.env.PORT || 4000;
 
-const httpServer = createServer();
+const httpServer = createServer((req: IncomingMessage, res: ServerResponse) => {
+  // Railway 헬스체크 응답
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ status: "ok", service: "durian-socket" }));
+});
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
